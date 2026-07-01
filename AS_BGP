@@ -1,0 +1,15 @@
+while True:
+
+    aus = input("Ingrese AS de BGP: ")
+
+    if aus > "0" and aus < "64512":
+        print(f"El valor {aus} corresponde a un AS de BGP público")
+    elif aus > "64511" and aus < "65535":
+        print(f"El valor {aus} corresponde a un AS de BGP privado")
+    else:
+        print("Valor no existe. Intente entre 1 y 65354.")
+
+    continuar = input("¿Desea ingresar otro valor? (si/no): ").strip().lower()
+    if continuar == "no":
+        print("ADIOS.")
+        break
