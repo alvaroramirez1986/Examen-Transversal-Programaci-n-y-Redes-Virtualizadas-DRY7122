@@ -1,0 +1,29 @@
+---
+- name: Instalar y configurar Apache en puerto 9999
+  hosts: localhost
+  connection: local
+  become: yes  # Requiere privilegios sudo
+  tasks:
+    - name: Instalar Apache (Ubuntu/Debian)
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Cambiar el puerto a 9999 en ports.conf
+      ansible.builtin.replace:
+        path: /etc/apache2/ports.conf
+        regexp: 'Listen 80'
+        replace: 'Listen 9999'
+
+    - name: Cambiar el puerto en el VirtualHost por defecto
+      ansible.builtin.replace:
+        path: /etc/apache2/sites-available/000-default.conf
+        regexp: '<VirtualHost \*:80>'
+        replace: '<VirtualHost \*:9999>'
+
+    - name: Reiniciar y habilitar servicio Apache
+      ansible.builtin.systemd:
+        name: apache2
+        state: restarted
+        enabled: yes
